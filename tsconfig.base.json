@@ -14,7 +14,14 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@cloud-abstraction-layer/cal-aws": ["libraries/cal-aws/src/index.ts"],
+      "@cloud-abstraction-layer/cal-azure": [
+        "libraries/cal-azure/src/index.ts"
+      ],
+      "@cloud-abstraction-layer/cal-core": ["libraries/cal-core/src/index.ts"],
+      "@cloud-abstraction-layer/cal-gcp": ["libraries/cal-gcp/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
