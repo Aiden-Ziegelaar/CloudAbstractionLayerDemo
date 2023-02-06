@@ -1,0 +1,1 @@
+export type registerHandler<T extends Function> = (fn: T) => void;
