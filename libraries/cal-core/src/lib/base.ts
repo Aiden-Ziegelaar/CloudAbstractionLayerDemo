@@ -1,4 +1,4 @@
-export abstract class BaseClass<T>{
+export interface BaseClass<T>{
   /**
   * The original input to the function
   * @type {T}
@@ -6,5 +6,5 @@ export abstract class BaseClass<T>{
   * @description This is the original input to the function.  It is not modified by the framework.
   * @deprecated
   */
-  public originalInput!: T; 
+  originalInput?: T; 
 }

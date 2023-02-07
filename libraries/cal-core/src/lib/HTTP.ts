@@ -1,3 +1,4 @@
+import { ParsedQs } from "qs";
 import { BaseClass } from "./base";
 
 export enum HTTPMethods {
@@ -6,49 +7,53 @@ export enum HTTPMethods {
   'HEAD',
   'POST',
   'PUT',
-  'DELETE'
+  'DELETE',
+  'TRACE',
+  'CONNECT'
 }
 
-export abstract class HTTPIntegrationRequest<T> extends BaseClass<T> {
-  public baseUrl!: string;
-  public body?: object;
-  public cookies?: Record<string, string|string[]>;
-  public host?: string;
-  public hostname?: string;
-  public ip!: string;
-  public ips!: string;
-  public method!: HTTPMethods;
-  public params?: Record<string, string|undefined>;
-  public path!: string;
-  public protocol?: string;
-  public query?: Record<string, string|undefined>;
-  public secure!: boolean;
-  public subdomains?: string[];
-  public xhr!: boolean;
-  public headers!: Record<string, string|string[]|undefined>;
-  public traceId?: string;
+export interface HTTPIntegrationRequest<T> extends BaseClass<T> {
+  baseUrl: string;
+  body?: object;
+  cookies?: Record<string, string|string[]>;
+  host?: string;
+  hostname?: string;
+  ip: string;
+  ips: string[];
+  method?: HTTPMethods | string;
+  params?: Record<string, string|undefined>;
+  path: string;
+  protocol?: string;
+  query?: Record<string, string | string[] | ParsedQs | ParsedQs[] | undefined>;
+  secure: boolean;
+  subdomains?: string[];
+  xhr: boolean;
+  headers: Record<string, string|string[]|undefined>;
+  traceId?: string;
 
-  get( header:string ): string | string[] | undefined {
-    return this.headers[ header.toLowerCase() ];
-  }  
+  get( header:string ): string | string[] | undefined;
 }
 
-export abstract class HTTPIntegrationResponse<T> extends BaseClass<T> {
-  abstract set( header:string, value:string|string[] ): void
-  abstract status( statusCode:number ): void
-  abstract send( body:string ): void
-  abstract json( body:object ): void
+export interface HTTPIntegrationResponse<T> extends BaseClass<T> {
+  set( header:string, value:string|string[] ): void
+  status( statusCode:number ): void
+  send( body:string ): void
+  json( body:object ): void
 }
 
 export class HTTPError extends Error {
-  constructor (message: string, public userMessage: string, public status: number) {
+  public userMessage: string;
+  public status: number;
+  constructor (message: string, userMessage: string, status: number) {
     super(message);
+    this.userMessage = userMessage;
+    this.status = status;
   }
 }
 
-export abstract class HTTPIntegration<T, U> extends BaseClass<T> {
-  abstract request: HTTPIntegrationRequest<T>;
-  abstract response: HTTPIntegrationResponse<U>;
+export interface HTTPIntegration<T, U> extends BaseClass<T> {
+  request: HTTPIntegrationRequest<T>;
+  response: HTTPIntegrationResponse<U>;
 }
 
 export type HTTPFunction<T, U> = (context: HTTPIntegration<T, U> ) => Promise<void>;
