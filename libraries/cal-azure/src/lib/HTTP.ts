@@ -21,6 +21,9 @@ class AZURE_HTTPIntegrationRequest implements HTTPIntegrationRequest<HttpRequest
     this.ips = this.ip.split(',').map(ip => ip.trim());
     this.originalInput = req;
   }
+  get(header: string): string | string[] | undefined {
+    return this.originalInput.get(header);
+  }
   baseUrl: string;
   body?: object | undefined;
   cookies?: Record<string, string | string[]> | undefined;
@@ -38,11 +41,7 @@ class AZURE_HTTPIntegrationRequest implements HTTPIntegrationRequest<HttpRequest
   xhr: boolean;
   headers: Record<string, string | string[] | undefined>;
   traceId?: string | undefined;
-  originalInput?: HttpRequest | undefined;
-
-  get(header: string): string | string[] | undefined {
-    return this.headers[header.toLowerCase()];
-  }
+  originalInput: HttpRequest;
 }
 
 class AZURE_HTTPIntegrationResponse implements HTTPIntegrationResponse<Context> {

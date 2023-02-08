@@ -1,1 +1,1 @@
-export * from './lib/cal-azure';
+export * from './lib/HTTP';
